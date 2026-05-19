@@ -1,0 +1,474 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#B8960C;--gold-light:#D4AE2A;--gold-dark:#8B6914;
+  --dg:#1B3A2D;--dg2:#2C5240;--dg3:#3D6B53;
+  --bg:#FAFAF7;--card:#fff;--border:#D4C5A0;
+  --text:#1a1a1a;--muted:#6b6b5e;--light:#F5F0E0
+}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+.app{display:flex;flex-direction:column;min-height:600px}
+
+/* Header */
+.header{background:var(--dg);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;border-bottom:3px solid var(--gold)}
+.header-logo{width:52px;height:52px;flex-shrink:0}
+.header-titles{display:flex;flex-direction:column;gap:1px}
+.brand{font-size:18px;font-weight:700;color:var(--gold-light);letter-spacing:2px}
+.sub-brand{font-size:10px;color:#adc9b8;letter-spacing:.5px}
+.sys-title{font-size:10px;color:#c9a84c;margin-top:1px;opacity:.9}
+
+/* Nav */
+.nav{background:var(--dg2);display:flex;overflow-x:auto;border-bottom:2px solid var(--gold)}
+.nav-btn{background:none;border:none;color:#adc9b8;padding:11px 18px;cursor:pointer;font-size:12px;font-weight:500;white-space:nowrap;border-bottom:3px solid transparent;transition:.2s;display:flex;align-items:center;gap:6px}
+.nav-btn:hover{color:var(--gold-light);background:rgba(201,168,76,.1)}
+.nav-btn.active{color:var(--gold-light);border-bottom-color:var(--gold);background:rgba(201,168,76,.12)}
+
+/* Page */
+.page{display:none;padding:16px 20px;flex:1}
+.page.active{display:block}
+
+/* Section title */
+.sec-title{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--gold)}
+.sec-title i{color:var(--gold);font-size:18px}
+.sec-title span{font-size:15px;font-weight:600;color:var(--dg)}
+
+/* Card */
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:14px}
+.card-title{font-size:12px;font-weight:600;color:var(--dg);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
+.card-title i{color:var(--gold)}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group.full{grid-column:1/-1}
+label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+input,select,textarea{background:#fff;border:1px solid var(--border);border-radius:5px;padding:7px 10px;font-size:13px;color:var(--text);font-family:inherit;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(184,150,12,.2)}
+.doc-no{font-family:monospace;font-size:13px;font-weight:700;color:var(--dg2);background:var(--light);border-color:var(--gold-dark)}
+textarea{resize:vertical;min-height:60px}
+
+/* Buttons */
+.btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.btn{border:none;padding:8px 16px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;transition:.2s}
+.btn-primary{background:var(--dg);color:var(--gold-light);border:1px solid var(--gold-dark)}
+.btn-primary:hover{background:var(--dg2)}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{background:var(--gold-dark)}
+.btn-outline{background:#fff;color:var(--dg);border:1px solid var(--border)}
+.btn-outline:hover{background:var(--light)}
+.btn-danger{background:#dc3545;color:#fff}
+.btn-danger:hover{background:#b02030}
+.btn-success{background:#1a6b3c;color:#fff}
+.btn-success:hover{background:#144f2d}
+
+/* Table */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--dg);color:var(--gold-light);padding:8px 10px;text-align:left;font-weight:600;white-space:nowrap}
+td{padding:7px 10px;border-bottom:1px solid #ede8d6;white-space:nowrap}
+tr:hover td{background:var(--light)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.badge-success{background:#d4edda;color:#155724}
+.badge-warn{background:#fff3cd;color:#856404}
+.badge-info{background:#d1ecf1;color:#0c5460}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.stat-val{font-size:22px;font-weight:700;color:var(--dg)}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:3px}
+.stat-gold .stat-val{color:var(--gold-dark)}
+
+/* Filters */
+.filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:flex-end}
+.filter-row .form-group{flex:1;min-width:120px}
+
+/* Chart canvas */
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.chart-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px}
+.chart-box canvas{max-height:200px}
+
+/* Print */
+@media print{
+  .nav,.btn-row,.filter-row,.no-print{display:none!important}
+  .page{display:block!important;padding:0}
+  body{background:#fff;font-size:11px}
+  .card{border:1px solid #ccc;margin-bottom:8px}
+  #print-label{display:block!important}
+  body>*:not(#print-label){display:none!important}
+  @page{size:80mm 120mm portrait;margin:3mm}
+}
+</style>
+
+<div class="app">
+  <!-- Header with real logo SVG (recreated from image) -->
+  <div class="header">
+    <!-- CHIA TAI Logo SVG -->
+    <svg class="header-logo" viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" aria-label="CHIA TAI Logo">
+      <!-- Square outer frame -->
+      <rect x="10" y="2" width="100" height="100" fill="none" stroke="#B8960C" stroke-width="8"/>
+      <!-- Circle inside square -->
+      <circle cx="60" cy="52" r="34" fill="none" stroke="#B8960C" stroke-width="8"/>
+      <!-- Corner cutouts (overlap to show square intersecting circle) -->
+      <rect x="10" y="2" width="18" height="18" fill="var(--dg)"/>
+      <rect x="92" y="2" width="18" height="18" fill="var(--dg)"/>
+      <rect x="10" y="84" width="18" height="18" fill="var(--dg)"/>
+      <rect x="92" y="84" width="18" height="18" fill="var(--dg)"/>
+      <!-- Re-draw corner of square on top -->
+      <rect x="10" y="2" width="100" height="8" fill="#B8960C"/>
+      <rect x="10" y="94" width="100" height="8" fill="#B8960C"/>
+      <rect x="10" y="2" width="8" height="100" fill="#B8960C"/>
+      <rect x="102" y="2" width="8" height="100" fill="#B8960C"/>
+      <!-- Text CHIA TAI below -->
+      <text x="60" y="125" text-anchor="middle" font-family="'Arial Black','Arial',sans-serif" font-size="22" font-weight="900" fill="#B8960C" letter-spacing="3">CHIA TAI</text>
+    </svg>
+    <div class="header-titles">
+      <div class="brand">บริษัท เจียไต๋ จำกัด</div>
+      <div class="sub-brand">CHIA TAI CO., LTD.</div>
+      <div class="sys-title">ระบบบันทึกส่งและรับสินค้า — ใบส่งออกสินค้าระหว่างหน้า-เข้าโกดัง</div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="showPage('export')" id="tab-export"><i class="ti ti-truck" aria-hidden="true"></i> ส่งออกสินค้า</button>
+    <button class="nav-btn" onclick="showPage('import')" id="tab-import"><i class="ti ti-building-warehouse" aria-hidden="true"></i> รับสินค้า</button>
+    <button class="nav-btn" onclick="showPage('report')" id="tab-report"><i class="ti ti-chart-pie" aria-hidden="true"></i> สรุปรายงาน</button>
+    <button class="nav-btn" onclick="showPage('admin')" id="tab-admin"><i class="ti ti-settings" aria-hidden="true"></i> จัดการระบบ</button>
+  </div>
+
+  <!-- PAGE: EXPORT -->
+  <div class="page active" id="page-export">
+    <div class="sec-title"><i class="ti ti-truck" aria-hidden="true"></i><span>บันทึกการส่งออกสินค้า</span></div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-file-text" aria-hidden="true"></i> รายละเอียดเอกสาร</div>
+      <div class="form-grid">
+        <div class="form-group"><label>เลขที่เอกสาร (Auto)</label><input class="doc-no" id="doc-no" value="EX-2568-0001" readonly></div>
+        <div class="form-group"><label>วันที่</label><input type="date" id="exp-date"></div>
+        <div class="form-group"><label>คลังสินค้า</label><select id="exp-warehouse"><option value="">-- เลือกคลัง --</option><option>คลังบางไทร</option><option>คลังเพชรทองบ่อ</option><option>คลังนครหลวง</option></select></div>
+        <div class="form-group"><label>รถบรรทุก</label><select id="exp-truck"><option value="">-- เลือกรถ --</option></select></div>
+        <div class="form-group"><label>ประเภท</label><select id="exp-type"><option value="">-- เลือกประเภท --</option><option>เรือ</option><option>ตู้คอนเทนเนอร์</option></select></div>
+        <div class="form-group"><label>ชื่อเรือใหญ่</label><input type="text" id="exp-ship" placeholder="ระบุชื่อเรือ"></div>
+        <div class="form-group"><label>Line ผลิต</label><input type="text" id="exp-line" placeholder="เช่น Line A"></div>
+        <div class="form-group"><label>หมวดหมู่</label><select id="exp-cat"><option value="">-- เลือกหมวด --</option><option>กระสอบ 50 กก.</option><option>จัมโบ้</option></select></div>
+        <div class="form-group"><label>สูตรปุ๋ย</label><select id="exp-formula"><option value="">-- เลือกสูตร --</option></select></div>
+        <div class="form-group"><label>จำนวนกระสอบ</label><input type="number" id="exp-bags" placeholder="0"></div>
+        <div class="form-group"><label>เวลาเริ่ม</label><input type="time" id="exp-start"></div>
+        <div class="form-group"><label>เวลาเสร็จ</label><input type="time" id="exp-end"></div>
+        <div class="form-group"><label>ผู้จัดส่งสินค้า</label><select id="exp-sender"><option value="">-- เลือกผู้จัดส่ง --</option></select></div>
+        <div class="form-group full"><label>หมายเหตุ (ไม่เกิน 1,000 ตัวอักษร)</label><textarea id="exp-note" maxlength="1000" rows="3" placeholder="หมายเหตุเพิ่มเติม..."></textarea></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="saveExport()"><i class="ti ti-device-floppy" aria-hidden="true"></i> บันทึก</button>
+        <button class="btn btn-outline" onclick="clearExport()"><i class="ti ti-refresh" aria-hidden="true"></i> ล้างข้อมูล</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-list" aria-hidden="true"></i> รายการส่งออกทั้งหมด</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>เลขที่</th><th>วันที่</th><th>คลัง</th><th>รถ</th><th>Line</th><th>สูตรปุ๋ย</th><th>หมวด</th><th>กระสอบ</th><th>ผู้จัดส่ง</th><th>สถานะ</th><th>พิมพ์</th></tr></thead>
+          <tbody id="export-table">
+            <tr><td>EX-2568-0001</td><td>19/05/2568</td><td>คลังบางไทร</td><td>80-1234</td><td>Line A</td><td>15-15-15</td><td>กระสอบ 50 กก.</td><td>500</td><td>สมชาย ดี</td><td><span class="badge badge-success"><i class="ti ti-check"></i> ส่งเรียบร้อย</span></td><td><button class="btn btn-gold" style="padding:4px 10px;font-size:11px" onclick="printLabel(this)"><i class="ti ti-printer"></i></button></td></tr>
+            <tr><td>EX-2568-0002</td><td>19/05/2568</td><td>คลังนครหลวง</td><td>กข-5678</td><td>Line B</td><td>46-0-0</td><td>จัมโบ้</td><td>200</td><td>วิชัย สุข</td><td><span class="badge badge-warn"><i class="ti ti-clock"></i> รอรับ</span></td><td><button class="btn btn-gold" style="padding:4px 10px;font-size:11px" onclick="printLabel(this)"><i class="ti ti-printer"></i></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: IMPORT -->
+  <div class="page" id="page-import">
+    <div class="sec-title"><i class="ti ti-building-warehouse" aria-hidden="true"></i><span>บันทึกการรับสินค้า</span></div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-file-import" aria-hidden="true"></i> รายละเอียดการรับ</div>
+      <div class="form-grid">
+        <div class="form-group"><label>อ้างอิงเลขที่ส่งออก</label><select id="imp-ref"><option>EX-2568-0001</option><option>EX-2568-0002</option></select></div>
+        <div class="form-group"><label>วันที่และเวลา (Realtime)</label><input id="imp-datetime" readonly style="background:var(--light);font-family:monospace"></div>
+        <div class="form-group"><label>คลังสินค้า</label><select id="imp-warehouse"><option value="">-- เลือกคลัง --</option><option>คลังบางไทร</option><option>คลังเพชรทองบ่อ</option><option>คลังนครหลวง</option></select></div>
+        <div class="form-group"><label>ชื่อเรือใหญ่ (อ้างอิงจากส่งออก)</label><select id="imp-ship"><option>เรือมังกรทอง</option><option>เรือสมุทร 5</option></select></div>
+        <div class="form-group"><label>สูตรปุ๋ย (อ้างอิงจากส่งออก)</label><select id="imp-formula"><option>15-15-15</option><option>46-0-0</option></select></div>
+        <div class="form-group"><label>เลขที่ Lot</label><input type="text" id="imp-lot" placeholder="LOT-XXXXXXX"></div>
+        <div class="form-group"><label>โกดังที่จัดเก็บ</label><select id="imp-godown"><option value="">-- เลือกโกดัง --</option></select></div>
+        <div class="form-group"><label>จำนวนตัน</label><input type="number" id="imp-tons" placeholder="0.00" step="0.01"></div>
+        <div class="form-group"><label>ผู้รับสินค้า</label><select id="imp-receiver"><option value="">-- เลือกผู้รับ --</option></select></div>
+        <div class="form-group full"><label>หมายเหตุ (ไม่เกิน 1,000 ตัวอักษร)</label><textarea id="imp-note" maxlength="1000" rows="3" placeholder="หมายเหตุเพิ่มเติม..."></textarea></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="saveImport()"><i class="ti ti-device-floppy" aria-hidden="true"></i> บันทึก</button>
+        <button class="btn btn-success" onclick="exportExcel('import')"><i class="ti ti-file-spreadsheet" aria-hidden="true"></i> Export Excel</button>
+        <button class="btn btn-outline" onclick="previewImport()"><i class="ti ti-eye" aria-hidden="true"></i> Preview</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-list" aria-hidden="true"></i> รายการรับสินค้า</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>อ้างอิง</th><th>วันที่</th><th>คลัง</th><th>เรือ</th><th>สูตรปุ๋ย</th><th>Lot</th><th>ตัน</th><th>ผู้รับ</th><th>สถานะ</th></tr></thead>
+          <tbody id="import-table">
+            <tr><td>EX-2568-0001</td><td>19/05/2568 08:30</td><td>คลังบางไทร</td><td>เรือมังกรทอง</td><td>15-15-15</td><td>LOT-240519</td><td>25.00</td><td>ประสิทธิ์ แก้ว</td><td><span class="badge badge-success"><i class="ti ti-check"></i> รับเข้าเรียบร้อย</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: REPORT -->
+  <div class="page" id="page-report">
+    <div class="sec-title"><i class="ti ti-chart-pie" aria-hidden="true"></i><span>สรุปรายงานการส่งออก-รับเข้า</span></div>
+    <div class="card no-print">
+      <div class="filter-row">
+        <div class="form-group"><label>ช่วงเวลา</label><select id="rep-period"><option value="daily">รายวัน</option><option value="monthly" selected>รายเดือน</option></select></div>
+        <div class="form-group"><label>เดือน</label><input type="month" id="rep-month" value="2025-05"></div>
+        <div class="form-group"><label>Line ผลิต</label><select id="rep-line"><option value="">ทั้งหมด</option><option>Line A</option><option>Line B</option><option>Line C</option></select></div>
+        <div class="form-group"><label>เวลาเริ่ม</label><input type="time" id="rep-ts"></div>
+        <div class="form-group"><label>เวลาสิ้นสุด</label><input type="time" id="rep-te"></div>
+        <div style="display:flex;gap:6px;align-items:flex-end;flex-wrap:wrap">
+          <button class="btn btn-gold" onclick="window.print()"><i class="ti ti-printer" aria-hidden="true"></i> พิมพ์</button>
+          <button class="btn btn-success" onclick="exportExcel('report')"><i class="ti ti-file-spreadsheet" aria-hidden="true"></i> Excel</button>
+          <button class="btn btn-outline" onclick="sendEmail()"><i class="ti ti-mail" aria-hidden="true"></i> Email</button>
+        </div>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat"><div class="stat-val">842</div><div class="stat-lbl">กระสอบส่งออก (เดือนนี้)</div></div>
+      <div class="stat stat-gold"><div class="stat-val">820</div><div class="stat-lbl">ตันรับเข้า (เดือนนี้)</div></div>
+      <div class="stat"><div class="stat-val" style="color:#1a6b3c">18</div><div class="stat-lbl">รายการส่งเรียบร้อย</div></div>
+      <div class="stat"><div class="stat-val" style="color:#856404">4</div><div class="stat-lbl">รอรับเข้าโกดัง</div></div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-box"><div class="card-title"><i class="ti ti-chart-pie" aria-hidden="true"></i> สัดส่วนส่งออก vs รับเข้า</div><canvas id="pieChart" height="180"></canvas></div>
+      <div class="chart-box"><div class="card-title"><i class="ti ti-chart-bar" aria-hidden="true"></i> ยอดรายเดือน (กระสอบ)</div><canvas id="barChart" height="180"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-stack" aria-hidden="true"></i> สต๊อกคงเหลือแต่ละรายการ</div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>สูตรปุ๋ย</th><th>หมวด</th><th>ส่งออก</th><th>รับเข้า</th><th>คงเหลือ</th><th>สถานะ</th></tr></thead>
+        <tbody>
+          <tr><td>15-15-15</td><td>กระสอบ 50 กก.</td><td>500</td><td>500</td><td>0</td><td><span class="badge badge-success">รับเข้าเรียบร้อย</span></td></tr>
+          <tr><td>46-0-0</td><td>จัมโบ้</td><td>200</td><td>0</td><td>200</td><td><span class="badge badge-warn">รอรับเข้า</span></td></tr>
+          <tr><td>16-20-0</td><td>กระสอบ 50 กก.</td><td>342</td><td>320</td><td>22</td><td><span class="badge badge-info">บางส่วน</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-list-details" aria-hidden="true"></i> รายงานส่งออกประจำเดือน</div>
+      <div class="tbl-wrap"><table id="report-table">
+        <thead><tr><th>เลขที่</th><th>วันที่</th><th>คลัง</th><th>Line</th><th>สูตรปุ๋ย</th><th>หมวด</th><th>กระสอบ</th><th>ผู้จัดส่ง</th><th>สถานะ</th></tr></thead>
+        <tbody>
+          <tr><td>EX-2568-0001</td><td>19/05/68</td><td>คลังบางไทร</td><td>Line A</td><td>15-15-15</td><td>กระสอบ 50 กก.</td><td>500</td><td>สมชาย ดี</td><td><span class="badge badge-success">ส่งเรียบร้อย</span></td></tr>
+          <tr><td>EX-2568-0002</td><td>19/05/68</td><td>คลังนครหลวง</td><td>Line B</td><td>46-0-0</td><td>จัมโบ้</td><td>200</td><td>วิชัย สุข</td><td><span class="badge badge-warn">รอรับ</span></td></tr>
+          <tr><td>EX-2568-0003</td><td>18/05/68</td><td>คลังเพชรทองบ่อ</td><td>Line A</td><td>16-20-0</td><td>กระสอบ 50 กก.</td><td>342</td><td>ประสิทธิ์ แก้ว</td><td><span class="badge badge-info">บางส่วน</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- PAGE: ADMIN -->
+  <div class="page" id="page-admin">
+    <div class="sec-title"><i class="ti ti-settings" aria-hidden="true"></i><span>จัดการระบบ</span></div>
+    <div id="admin-tabs" style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="showAdmin('formula',this)">สูตรปุ๋ย</button>
+      <button class="btn btn-outline" onclick="showAdmin('truck',this)">เลขรถบรรทุก</button>
+      <button class="btn btn-outline" onclick="showAdmin('godown',this)">โกดังจัดเก็บ</button>
+      <button class="btn btn-outline" onclick="showAdmin('sender',this)">ผู้จัดส่ง</button>
+      <button class="btn btn-outline" onclick="showAdmin('receiver',this)">ผู้รับสินค้า</button>
+    </div>
+    <div class="card">
+      <div class="card-title" id="admin-title"><i class="ti ti-flask" aria-hidden="true"></i> จัดการสูตรปุ๋ย</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <input type="text" id="admin-input" placeholder="เพิ่มรายการใหม่..." style="flex:1">
+        <button class="btn btn-gold" onclick="addAdminItem()"><i class="ti ti-plus" aria-hidden="true"></i> เพิ่ม</button>
+      </div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>#</th><th>รายการ</th><th>แก้ไข</th><th>ลบ</th></tr></thead>
+        <tbody id="admin-tbody"></tbody>
+      </table></div>
+    </div>
+  </div>
+</div>
+
+<!-- Print Label (hidden, appears on print) -->
+<div id="print-label" style="display:none">
+<style>
+@media print{
+  body>*:not(#print-label){display:none!important}
+  #print-label{display:block!important}
+  @page{size:80mm 120mm portrait;margin:3mm}
+  .lbl{width:74mm;font-family:'Segoe UI',Arial,sans-serif;font-size:9px;border:1.5px solid #1B3A2D;padding:3mm;display:flex;flex-direction:column;gap:1.5mm}
+  .lbl-hd{display:flex;align-items:center;gap:2mm;border-bottom:1.5px solid #B8960C;padding-bottom:2mm;margin-bottom:1mm}
+  .lbl-brand{font-family:'Arial Black',Arial,sans-serif;font-size:13px;font-weight:900;color:#1B3A2D;letter-spacing:2px}
+  .lbl-co{font-size:7px;color:#555}
+  .lbl-docno{font-family:monospace;font-size:12px;font-weight:700;text-align:center;background:#F5F0E0;border:1px solid #B8960C;padding:1.5mm;color:#1B3A2D}
+  .lbl-sec{font-size:9px;font-weight:700;text-align:center;color:#1B3A2D;letter-spacing:.5px;margin:1mm 0}
+  .lbl-row{display:flex;justify-content:space-between;border-bottom:.5px solid #e0d8c0;padding:.8mm 0}
+  .lbl-k{color:#777;flex:1}
+  .lbl-v{font-weight:700;flex:2;text-align:right;color:#1B3A2D}
+  .lbl-qr{text-align:center;margin-top:2mm}
+}
+</style>
+<div class="lbl">
+  <div class="lbl-hd">
+    <svg width="28" height="28" viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="2" width="100" height="100" fill="none" stroke="#B8960C" stroke-width="8"/>
+      <circle cx="60" cy="52" r="34" fill="none" stroke="#B8960C" stroke-width="8"/>
+      <rect x="10" y="2" width="18" height="18" fill="white"/>
+      <rect x="92" y="2" width="18" height="18" fill="white"/>
+      <rect x="10" y="84" width="18" height="18" fill="white"/>
+      <rect x="92" y="84" width="18" height="18" fill="white"/>
+      <rect x="10" y="2" width="100" height="8" fill="#B8960C"/>
+      <rect x="10" y="94" width="100" height="8" fill="#B8960C"/>
+      <rect x="10" y="2" width="8" height="100" fill="#B8960C"/>
+      <rect x="102" y="2" width="8" height="100" fill="#B8960C"/>
+    </svg>
+    <div>
+      <div class="lbl-brand">CHIA TAI</div>
+      <div class="lbl-co">บริษัท เจียไต๋ จำกัด</div>
+      <div class="lbl-co">ใบส่งออกสินค้าระหว่างหน้า-เข้าโกดัง</div>
+    </div>
+  </div>
+  <div class="lbl-docno" id="lbl-docno">EX-2568-0001</div>
+  <div class="lbl-sec">รายการส่งออกสินค้า</div>
+  <div class="lbl-row"><span class="lbl-k">วันที่</span><span class="lbl-v" id="lbl-date">-</span></div>
+  <div class="lbl-row"><span class="lbl-k">รถบรรทุก</span><span class="lbl-v" id="lbl-truck">-</span></div>
+  <div class="lbl-row"><span class="lbl-k">Line ผลิต</span><span class="lbl-v" id="lbl-line">-</span></div>
+  <div class="lbl-row"><span class="lbl-k">หมวดหมู่</span><span class="lbl-v" id="lbl-cat">-</span></div>
+  <div class="lbl-row"><span class="lbl-k">สูตรปุ๋ย</span><span class="lbl-v" id="lbl-form">-</span></div>
+  <div class="lbl-row"><span class="lbl-k">จำนวนกระสอบ</span><span class="lbl-v" id="lbl-bags">-</span></div>
+  <div class="lbl-row"><span class="lbl-k">ผู้จัดส่ง</span><span class="lbl-v" id="lbl-sender">-</span></div>
+  <div class="lbl-row"><span class="lbl-k">เวลา</span><span class="lbl-v" id="lbl-time">-</span></div>
+  <div class="lbl-qr"><canvas id="qr-canvas" width="72" height="72"></canvas><div style="font-size:7px;color:#888;margin-top:1mm">QR รวมข้อมูลทั้งหมด</div></div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+var adminData={
+  formula:['15-15-15','46-0-0','16-20-0','13-13-21','20-8-20','0-0-60'],
+  truck:['80-1234','กข-5678','นร-9900','กท-1111','ชม-4242'],
+  godown:['โกดัง A','โกดัง B','โกดัง C','โกดัง D'],
+  sender:['สมชาย ดี','วิชัย สุข','ประสิทธิ์ แก้ว','นิรัตน์ ทอง'],
+  receiver:['ประสิทธิ์ แก้ว','มานพ ใจดี','สุรชัย เดช','วัชรินทร์ ศรี']
+};
+var currentAdmin='formula';
+var docCounter=3;
+function pad(n){return n<10?'0'+n:n}
+function todayThai(){var d=new Date();return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+(d.getFullYear()+543)}
+document.getElementById('exp-date').value=new Date().toISOString().split('T')[0];
+function updateClock(){var d=new Date();var s=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());var el=document.getElementById('imp-datetime');if(el)el.value=s;}
+updateClock();setInterval(updateClock,1000);
+
+function showPage(p){
+  document.querySelectorAll('.page').forEach(function(el){el.classList.remove('active')});
+  document.querySelectorAll('.nav-btn').forEach(function(el){el.classList.remove('active')});
+  document.getElementById('page-'+p).classList.add('active');
+  document.getElementById('tab-'+p).classList.add('active');
+  if(p==='report')initCharts();
+}
+
+function populateSelects(){
+  var map={'exp-truck':adminData.truck,'exp-formula':adminData.formula,'exp-sender':adminData.sender,'imp-godown':adminData.godown,'imp-receiver':adminData.receiver};
+  for(var k in map){var s=document.getElementById(k);if(!s)continue;var c=s.value;s.innerHTML='<option value="">-- เลือก --</option>';map[k].forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);});s.value=c;}
+}
+populateSelects();
+
+function saveExport(){
+  docCounter++;
+  var no='EX-2568-'+pad(pad(docCounter));
+  document.getElementById('doc-no').value=no;
+  var truck=document.getElementById('exp-truck').value||'-';
+  var line=document.getElementById('exp-line').value||'-';
+  var form=document.getElementById('exp-formula').value||'-';
+  var cat=document.getElementById('exp-cat').value||'-';
+  var bags=document.getElementById('exp-bags').value||'0';
+  var sender=document.getElementById('exp-sender').value||'-';
+  var wh=document.getElementById('exp-warehouse').value||'-';
+  var tb=document.getElementById('export-table');
+  var tr=document.createElement('tr');
+  tr.innerHTML='<td>'+no+'</td><td>'+todayThai()+'</td><td>'+wh+'</td><td>'+truck+'</td><td>'+line+'</td><td>'+form+'</td><td>'+cat+'</td><td>'+bags+'</td><td>'+sender+'</td><td><span class="badge badge-warn"><i class="ti ti-clock"></i> รอรับ</span></td><td><button class="btn btn-gold" style="padding:4px 10px;font-size:11px" onclick="printLabel(this)"><i class="ti ti-printer"></i></button></td>';
+  tb.appendChild(tr);
+  alert('บันทึกเรียบร้อย: '+no);
+}
+
+function clearExport(){['exp-warehouse','exp-truck','exp-type','exp-cat','exp-formula','exp-sender'].forEach(function(id){document.getElementById(id).value='';});['exp-ship','exp-line','exp-bags','exp-note','exp-start','exp-end'].forEach(function(id){document.getElementById(id).value='';});}
+
+function printLabel(btn){
+  var row=btn.closest('tr'),cells=row.querySelectorAll('td');
+  document.getElementById('lbl-docno').textContent=cells[0].textContent;
+  document.getElementById('lbl-date').textContent=cells[1].textContent;
+  document.getElementById('lbl-truck').textContent=cells[3].textContent;
+  document.getElementById('lbl-line').textContent=cells[4].textContent;
+  document.getElementById('lbl-form').textContent=cells[5].textContent;
+  document.getElementById('lbl-cat').textContent=cells[6].textContent;
+  document.getElementById('lbl-bags').textContent=cells[7].textContent+' กระสอบ';
+  document.getElementById('lbl-sender').textContent=cells[8].textContent;
+  document.getElementById('lbl-time').textContent='-';
+  var qrData=cells[0].textContent+'|'+cells[1].textContent+'|'+cells[3].textContent+'|'+cells[4].textContent+'|'+cells[5].textContent+'|'+cells[7].textContent+'|'+cells[8].textContent;
+  var canvas=document.getElementById('qr-canvas');
+  canvas.getContext('2d').clearRect(0,0,72,72);
+  try{new QRCode(canvas,{text:qrData,width:72,height:72,correctLevel:QRCode.CorrectLevel.M});}catch(e){}
+  document.getElementById('print-label').style.display='block';
+  setTimeout(function(){window.print();document.getElementById('print-label').style.display='none';},400);
+}
+
+function saveImport(){
+  var ref=document.getElementById('imp-ref').value,wh=document.getElementById('imp-warehouse').value||'-',ship=document.getElementById('imp-ship').value||'-',form=document.getElementById('imp-formula').value||'-',lot=document.getElementById('imp-lot').value||'-',tons=document.getElementById('imp-tons').value||'0',recv=document.getElementById('imp-receiver').value||'-';
+  var d=new Date(),dt=pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+(d.getFullYear()-2500+100)+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+  var tb=document.getElementById('import-table'),tr=document.createElement('tr');
+  tr.innerHTML='<td>'+ref+'</td><td>'+dt+'</td><td>'+wh+'</td><td>'+ship+'</td><td>'+form+'</td><td>'+lot+'</td><td>'+parseFloat(tons).toFixed(2)+'</td><td>'+recv+'</td><td><span class="badge badge-success"><i class="ti ti-check"></i> รับเข้าเรียบร้อย</span></td>';
+  tb.appendChild(tr);alert('บันทึกรับสินค้าเรียบร้อย');
+}
+
+function previewImport(){alert('Preview รายการรับสินค้า\n\nอ้างอิง: '+document.getElementById('imp-ref').value+'\nคลัง: '+document.getElementById('imp-warehouse').value+'\nสูตร: '+document.getElementById('imp-formula').value+'\nจำนวนตัน: '+document.getElementById('imp-tons').value);}
+
+function exportExcel(type){
+  var headers,rows=[];
+  if(type==='import'){
+    headers=['อ้างอิง','วันที่','คลัง','เรือ','สูตรปุ๋ย','Lot','ตัน','ผู้รับ','สถานะ'];
+    document.querySelectorAll('#import-table tr').forEach(function(r){var c=r.querySelectorAll('td');if(c.length)rows.push([c[0].textContent,c[1].textContent,c[2].textContent,c[3].textContent,c[4].textContent,c[5].textContent,c[6].textContent,c[7].textContent,c[8].textContent.trim()]);});
+  }else{
+    headers=['เลขที่','วันที่','คลัง','Line','สูตรปุ๋ย','หมวด','กระสอบ','ผู้จัดส่ง','สถานะ'];
+    document.querySelectorAll('#report-table tbody tr').forEach(function(r){var c=r.querySelectorAll('td');if(c.length)rows.push([c[0].textContent,c[1].textContent,c[2].textContent,c[3].textContent,c[4].textContent,c[5].textContent,c[6].textContent,c[7].textContent,c[8].textContent.trim()]);});
+  }
+  var csv='\uFEFF'+headers.join(',')+'\n'+rows.map(function(r){return r.map(function(c){return '"'+c.replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download='ChiaTai_'+(type==='import'?'Import':'Report')+'_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+}
+
+function sendEmail(){alert('เปิดโปรแกรม Email...\nกรุณาตั้งค่า SMTP ในระบบก่อนใช้งาน');}
+
+function showAdmin(type,btn){
+  currentAdmin=type;
+  var titles={formula:'จัดการสูตรปุ๋ย',truck:'จัดการเลขรถบรรทุก',godown:'จัดการโกดังที่จัดเก็บ',sender:'จัดการผู้จัดส่งสินค้า',receiver:'จัดการผู้รับสินค้า'};
+  var icons={formula:'ti-flask',truck:'ti-truck',godown:'ti-building',sender:'ti-user',receiver:'ti-user-check'};
+  document.getElementById('admin-title').innerHTML='<i class="ti '+icons[type]+'" aria-hidden="true"></i> '+titles[type];
+  renderAdminList();
+  document.querySelectorAll('#admin-tabs .btn').forEach(function(b){b.className='btn btn-outline';});
+  if(btn)btn.className='btn btn-primary';
+}
+
+function renderAdminList(){
+  var tb=document.getElementById('admin-tbody');tb.innerHTML='';
+  adminData[currentAdmin].forEach(function(item,i){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td>'+(i+1)+'</td><td>'+item+'</td><td><button class="btn btn-outline" style="padding:3px 8px;font-size:11px" onclick="editItem('+i+')"><i class="ti ti-edit"></i></button></td><td><button class="btn btn-danger" style="padding:3px 8px;font-size:11px" onclick="delItem('+i+')"><i class="ti ti-trash"></i></button></td>';
+    tb.appendChild(tr);
+  });
+}
+
+function addAdminItem(){var v=document.getElementById('admin-input').value.trim();if(!v){alert('กรุณากรอกรายการ');return;}adminData[currentAdmin].push(v);document.getElementById('admin-input').value='';renderAdminList();populateSelects();}
+function delItem(i){if(confirm('ลบ "'+adminData[currentAdmin][i]+'" ?')){adminData[currentAdmin].splice(i,1);renderAdminList();populateSelects();}}
+function editItem(i){var v=prompt('แก้ไข:',adminData[currentAdmin][i]);if(v!==null&&v.trim()){adminData[currentAdmin][i]=v.trim();renderAdminList();populateSelects();}}
+
+renderAdminList();
+
+var chartsInit=false;
+function initCharts(){
+  if(chartsInit)return;chartsInit=true;
+  var pc=document.getElementById('pieChart'),bc=document.getElementById('barChart');
+  if(!pc||!bc)return;
+  new Chart(pc,{type:'pie',data:{labels:['ส่งออก','รับเข้า'],datasets:[{data:[842,820],backgroundColor:['#1B3A2D','#B8960C'],borderWidth:2,borderColor:'#fff'}]},options:{plugins:{legend:{position:'bottom',labels:{font:{size:11}}}},responsive:true,maintainAspectRatio:true}});
+  new Chart(bc,{type:'bar',data:{labels:['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.'],datasets:[{label:'ส่งออก',data:[620,710,680,750,842],backgroundColor:'#1B3A2D'},{label:'รับเข้า',data:[600,695,670,740,820],backgroundColor:'#B8960C'}]},options:{plugins:{legend:{position:'bottom',labels:{font:{size:11}}}},responsive:true,maintainAspectRatio:true,scales:{y:{beginAtZero:true,ticks:{font:{size:10}}}}}});
+}
+</script>
